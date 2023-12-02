@@ -1,109 +1,60 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load blog_tags %}
 {% block content %}
 <!-- Main-->
-    <div class="content-wrap ">
-        <!-- Page title-->
-        <div class="position-relative py-210">
-            <div class="background">
-                <div class="background-image jarallax" data-jarallax data-speed="0.8"><img class="jarallax-img" loading="lazy" src="{% static 'img/blog/blog-hero-1920x1080.jpg' %}" alt=""></div>
-                <div class="background-color" style="--background-color: #000; opacity: .25;"></div>
-            </div>
-            <div class="container">
-                <h2 class="text-white mb-0 text-center">وبلاگ</h2>
-            </div>
+<div class="content-wrap ">
+    <!-- Page title-->
+    <div class="position-relative py-210">
+        <div class="background">
+            <div class="background-image jarallax" data-jarallax data-speed="0.8"><img class="jarallax-img"
+                    loading="lazy" src="{% static 'img/blog/blog-hero-1920x1080.jpg' %}" alt=""></div>
+            <div class="background-color" style="--background-color: #000; opacity: .25;"></div>
         </div>
-        <div class="pt-80 pb-130">
-            <div class="container">
-                <!-- Isotope-->
-                <div class="isotope">
-                    <ul class="nav justify-content-center isotope-filters mb-60">
-                        <li class="nav-item active"><a class="nav-link" href="#" data-filter="all">همه</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" data-filter="marketing">دنیای وب</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" data-filter="company">تسهیلات</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" data-filter="business">سبک زندگی</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" data-filter="architecture">مُد و پوشاک</a></li>
-                    </ul>
-                    <div class="row isotope-grid gy-30">
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="architecture">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">تسهیلات</span><img loading="lazy" src="{% static 'img/blog/blog-post-1-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">جزییات وام مسکن</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
+        <div class="container">
+            <h2 class="text-white mb-0 text-center">وبلاگ</h2>
+        </div>
+    </div>
+    <div class="pt-80 pb-130">
+        <div class="container">
+            <!-- Isotope-->
+            <div class="isotope">
+                <ul class="nav justify-content-center isotope-filters mb-60">
+
+                    <li class="nav-item active"><a class="nav-link" href="{% url 'blog:index' %}" data-filter="all">همه</a></li>
+                    {% for item, count in categories.items %}
+
+                    <pre>  </pre><li class="nav-item{% if request.resolver_match.url_name=='category' %} active {% endif %}"><a class="nav-link" href="{% url 'blog:category' cat_name=item %}">{{item}} - {{count}}</a></li>
+
+                    {% endfor %}
+                </ul>
+                <p style="text-align: right; font-size: larger;">مجموع پست های وبلاگ : {% Total_posts as tp %}{{tp}}</p>
+                <div class="row isotope-grid gy-30">
+                    {% for post in posts %}
+                    <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="architecture">
+                        <!-- Blog-->
+                        <div
+                            class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white">
+                            <a class="card-img rounded-0" href="{% url 'blog:single' pid=post.id %}" data-img-height
+                                style="--img-height: 72%;"><span
+                                    class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">تسهیلات</span><img
+                                    loading="lazy" src="{{post.image.url}}" alt=""></a>
+                            <div class="card-body py-40 px-50 pb-50"><a class="card-title h5"
+                                    href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
+                                <p class="card-text">{{post.content|truncatewords:20}}</p></br>
+                                <p>نویسنده : {{post.author.get_full_name}}</p></br><!-- Button--><a
+                                    class="btn btn-accent-1 btn-link btn-clean"
+                                    href="{% url 'blog:single' pid=post.id %}" target="_self">بیشتر بخوانید</a>
                             </div>
                         </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="company">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">معماری</span><img loading="lazy" src="{% static 'img/blog/blog-post-2-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">عایق رطوبتی نانو و انواع آن</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="business">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">عمومی</span><img loading="lazy" src="{% static 'img/blog/blog-post-3-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">10 پرنده‌ خانگی برتر</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="company">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">سبک زندگی</span><img loading="lazy" src="{% static 'img/blog/blog-post-4-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">بهترین کافه های سنتی تهران</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="marketing">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">برنامه نویسی</span><img loading="lazy" src="{% static 'img/blog/blog-post-5-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">5 کتاب محبوب برنامه نویسی</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="marketing">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">مُد و پوشاک</span><img loading="lazy" src="{% static 'img/blog/blog-post-6-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">مجله آنلاین مُد و زیبایی</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="business">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">تکنولوژی</span><img loading="lazy" src="{% static 'img/blog/blog-post-7-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">بهترین گوشی برای بلاگرها</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="architecture">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">گردشگری</span><img loading="lazy" src="{% static 'img/blog/blog-post-8-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">تمیزترین و بهترین سواحل شمال</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=" isotope-item col-12 col-md-6 col-lg-4" data-filters="business">
-                            <!-- Blog-->
-                            <div class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white"><a class="card-img rounded-0" href="single-post.html" data-img-height style="--img-height: 72%;"><span class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">دنیای وب</span><img loading="lazy" src="{% static 'img/blog/blog-post-9-900x800.jpg' %}" alt=""></a>
-                                <div class="card-body py-40 px-50 pb-50"><a class="card-title h5" href="single-post.html">خرید تی بگ های استوانه ای</a>
-                                    <p class="card-text">دریافت تسهیلات و وام های بانکی می تواند کمک کوچکی در راستای خرید خانه...</p><!-- Button--><a class="btn btn-accent-1 btn-link btn-clean" href="single-post.html" target="_self">بیشتر بخوانید</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mt-80">
-                        <!-- Button--><a class="btn btn-light" href="#" target="_self">مشاهده بیشتر</a>
-                    </div>
+                    </div>{% endfor %}
+                </div>
+
+                <div class="text-center mt-80">
+                    <!-- <a class="btn btn-light" href="#" target="_self">مشاهده بیشتر</a> -->
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
