@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load blog_tags %}
+{% load humanize %}
 {% block content %}
 <!-- Main-->
 <div class="content-wrap ">
@@ -20,12 +21,9 @@
             <!-- Isotope-->
             <div class="isotope">
                 <ul class="nav justify-content-center isotope-filters mb-60">
-
                     <li class="nav-item active"><a class="nav-link" href="{% url 'blog:index' %}" data-filter="all">همه</a></li>
                     {% for item, count in categories.items %}
-
-                    <pre>  </pre><li class="nav-item{% if request.resolver_match.url_name=='category' %} active {% endif %}"><a class="nav-link" href="{% url 'blog:category' cat_name=item %}">{{item}} - {{count}}</a></li>
-
+                    <pre>  </pre><li class="nav-item active"><a class="nav-link" href="{% url 'blog:category' cat_name=item %}">{{item}} - {{count}}</a></li>
                     {% endfor %}
                 </ul>
                 <p style="text-align: right; font-size: larger;">مجموع پست های وبلاگ : {% Total_posts as tp %}{{tp}}</p>
@@ -42,19 +40,24 @@
                             <div class="card-body py-40 px-50 pb-50"><a class="card-title h5"
                                     href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
                                 <p class="card-text">{{post.content|truncatewords:20}}</p></br>
-                                <p>نویسنده : {{post.author.get_full_name}}</p></br><!-- Button--><a
+                                <p class="pfn">نویسنده : {{post.author.get_full_name}}</p><!-- Button-->
+                                <p class="pfn">تاریخ انتشار : {{post.published_at|date:'d / m / Y' }}</p><!-- Button--><a
                                     class="btn btn-accent-1 btn-link btn-clean"
                                     href="{% url 'blog:single' pid=post.id %}" target="_self">بیشتر بخوانید</a>
+                                
                             </div>
                         </div>
                     </div>{% endfor %}
                 </div>
-
                 <div class="text-center mt-80">
-                    <!-- <a class="btn btn-light" href="#" target="_self">مشاهده بیشتر</a> -->
+                    {% include 'pagination.html' %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- <form action="{% url 'blog:index' %}" method="get">
+    {% csrf_token %}
+    <input type="hidden" name="url" value="{{ request.path }}">
+</form> -->
 {% endblock %}

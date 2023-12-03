@@ -1,0 +1,20 @@
+<div class="pagination btn pgm">
+    <span class="step-links">
+        {% if posts.has_previous %}
+            <pre class="pgn">  </pre><a class="apgn" href="?page=1">first-page</a><pre class="pgn">  </pre>
+            <a class="apgn" href="?page={{ posts.previous_page_number }}">previous</a><pre class="pgn">  </pre>
+        {% endif %}
+
+        <span class="current">
+            <pre class="pgn">  </pre>Page {{ posts.number }} of {{ posts.paginator.num_pages }}.<pre class="pgn">  </pre>
+            {% for i in posts.paginator.page_range %}
+            <pre class="pgn">  </pre><a class="apgn" href="?page={{i}}">{{i}}</a><pre class="pgn">  </pre>
+            {% endfor %}
+        </span>
+
+        {% if posts.has_next %}
+        <pre class="pgn">  </pre><a class="apgn" href="?page={{ posts.next_page_number }}">next</a><pre class="pgn">  </pre>
+        <pre class="pgn">  </pre><a class="apgn" href="?page={{ posts.paginator.num_pages }}">last-page</a><pre class="pgn">  </pre>
+        {% endif %}
+    </span>
+</div>

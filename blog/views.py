@@ -1,18 +1,34 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category
 from django.utils import timezone
+from django.core.paginator import (
+   Paginator, EmptyPage,
+   PageNotAnInteger
+)
 
 # Create your views here.
 def blog_view(request, **kwargs):
     now = timezone.now()
+    # url = request.POST.get('url')
+    # print(url)
     posts = Post.objects.filter(status=True).exclude(published_at__gte=now)
     if kwargs.get('cat_name') is not None:
         posts = Post.objects.filter(status=True, category__name=kwargs['cat_name']).exclude(published_at__gte=now)
-    
+        
     category = Category.objects.all()
     cat_dict = {}
     for name in category:
         cat_dict[name] = posts.filter(category=name).count()
+
+    paginator = Paginator(posts, 6)
+    try:
+        page = request.GET.get('page')
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(1)
+
     context = {'posts': posts, 'categories':cat_dict}
     return render(request, 'blog.html', context)
 

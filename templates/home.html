@@ -169,21 +169,14 @@
                                 </div>
                             </div>
                         </div><!-- Form-->
-                        <form class="mt-75" data-show="startbox">
+                        <form class="mt-75" data-show="startbox" method="post" action="{% url 'website:contact' %}">
+                            {% csrf_token %}
                             <div class="row gy-40">
-                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" type="text" placeholder="نام و نام خانوادگی *"></div>
-                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" type="email" placeholder="ایمیل *"></div>
-                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" type="tel" placeholder="شماره تماس *"></div>
-                                <div class="col-12 col-md-6"><select class="form-control form-control-gray">
-                                        <option selected="">فرصت های شغلی</option>
-                                        <option>طراحی وب</option>
-                                        <option>مدیر پروژه</option>
-                                        <option>برنامه نویسی موبایل</option>
-                                        <option>گزارش گیری</option>
-                                        <option>بازاریابی</option>
-                                        <option>طراحی گرافیک</option>
-                                    </select></div>
-                                <div class="col-12 mb-10"><textarea class="form-control form-control-gray" rows="2" placeholder="متن درخواست *"></textarea></div>
+                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" name="first_name" type="text" placeholder="نام"></div>
+                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" name="last_name" type="text" placeholder="نام خانوادگی"></div>
+                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" name="email" type="email" placeholder="ایمیل"></div>
+                                <div class="col-12 col-md-6"><input class="form-control form-control-gray" name="subject" type="text" placeholder="موضوع درخواست"></div>
+                                <div class="col-12 mb-10"><textarea class="form-control form-control-gray" name="message" rows="2" placeholder="متن درخواست"></textarea></div>
                                 <div class="col-12 text-center">
                                     <!-- Button--><button class="btn btn-accent-1">ارسال</button>
                                 </div>
@@ -439,4 +432,16 @@
                 </div>
             </div>
         </div><!-- Call to action-->
+        {% if messages %}
+        <div id="message-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+                <!-- <button class="close" aria-label="Close" onclick="closeMessage(this)">
+                <span aria-hidden="true">×</span>
+                </button> -->
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 {% endblock %}

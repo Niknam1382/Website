@@ -3,6 +3,18 @@
 
 {% block content %}
 <!-- Main-->
+{% if messages %}
+<div id="message-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+        <!-- <button class="close" aria-label="Close" onclick="closeMessage(this)">
+        <span aria-hidden="true">×</span>
+        </button> -->
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
     <div class="content-wrap ">
         <div class="pt-190 pb-130 bg-linear-gradient shape-parent">
             <!-- Shape-->
@@ -57,13 +69,14 @@
                 <div class="row mt-110">
                     <div class="col-lg-8 offset-lg-2">
                         <!-- Form-->
-                        <form data-show="startbox">
+                        <form data-show="startbox" method="post" action="{% url 'website:contact' %}">
+                            {% csrf_token %}
                             <div class="row gy-40">
-                                <div class="col-12 col-md-6"><input class="form-control" type="text" placeholder="نام"></div>
-                                <div class="col-12 col-md-6"><input class="form-control" type="text" placeholder="نام خانوادگی"></div>
-                                <div class="col-12 col-md-6"><input class="form-control" type="email" placeholder="ایمیل"></div>
-                                <div class="col-12 col-md-6"><input class="form-control" type="tel" placeholder="شماره تماس"></div>
-                                <div class="col-12 mb-10"><textarea class="form-control" rows="2" placeholder="متن درخواست"></textarea></div>
+                                <div class="col-12 col-md-6"><input class="form-control" name="first_name" type="text" placeholder="نام"></div>
+                                <div class="col-12 col-md-6"><input class="form-control" name="last_name" type="text" placeholder="نام خانوادگی"></div>
+                                <div class="col-12 col-md-6"><input class="form-control" name="email" type="email" placeholder="ایمیل"></div>
+                                <div class="col-12 col-md-6"><input class="form-control" name="subject" type="text" placeholder="موضوع درخواست"></div>
+                                <div class="col-12 mb-10"><textarea class="form-control" name="message" rows="2" placeholder="متن درخواست"></textarea></div>
                                 <div class="col-12 col-lg-3 text-end text-lg-start">
                                     <!-- Button--><button class="btn btn-accent-1">ارسال</button>
                                 </div>
@@ -74,4 +87,5 @@
             </div>
         </div>
     </div>
+    
 {% endblock %}
