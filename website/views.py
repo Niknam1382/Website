@@ -32,8 +32,11 @@ def contact_view(request):
             msg = messages.success(request, "پیام شما با موفقیت ثبت شد")
             # return redirect(next_url)
             return redirect('/')
+        else:
+            msg = messages.warning(request, "ثبت پیام شما با خطا مواجه شد")
+            return redirect('/')
         if msg :
-            context[str(msg)] = msg = messages.success(request, "پیام شما با موفقیت ثبت شد")
+            context[str(msg)] = messages.success(request, "پیام شما با موفقیت ثبت شد")
 
     form = ContactForm()
     context = {'form': form}

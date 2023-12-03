@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from jalali_date import datetime2jalali, date2jalali
+from django.urls import reverse
+from taggit.managers import TaggableManager
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -13,7 +16,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='blog/', default='blog/default.jpg')
     category = models.ManyToManyField(Category)
-    # tag
+    tags = TaggableManager()
     counted_view = models.IntegerField(default=0)
     status=models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -25,6 +28,12 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
+    
+    # def test (self):
+    #     return date2jalali(self.published_at)
+    
+    def get_absolute_url(self) :
+        return reverse('blog:single', kwargs={'pid':self.id})
     
 class link(models.Model):
     url = models.CharField(max_length=255)

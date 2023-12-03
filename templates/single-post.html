@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block content %}
 <!-- Main-->
 
@@ -13,19 +13,19 @@
     </div>
     <div class="container">
         <div class="row pt-120 pb-60">
-            <div class="col-12 col-lg-8 offset-lg-2">
-                <div class="subtitle mb-15 font-size-15 fw-medium text-gray-dark">{{post.category.all|join:' - '}}<span
+            <div class="col-12 col-lg-8 offset-lg-2">{% for tag in post.tags.all %}
+                <div class="subtitle mb-15 font-size-15 fw-medium text-gray-dark"><a class="atag" href="{% url 'blog:tag' tag_name=tag.name %}">{{tag.name}}</a><span
                         class="sep-dot"></span>{{post.published_at}}<span
                         class="sep-dot"></span>{{post.author.get_full_name}}<span
                         class="sep-dot"></span>{{post.counted_view}} view's
 
-                    </div>
+                    </div>{% endfor %}
                 <h3 class="m-0 ps-30">{{post.title}}</h3>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-lg-8 offset-lg-2">
-                <p>{{post.content}}</p>
+                <p>{{post.content|safe}}</p>
             </div>
         </div>
         

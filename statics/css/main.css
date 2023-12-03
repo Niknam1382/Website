@@ -43963,10 +43963,16 @@ code.docs-card-gist .blob-wrapper {
   text-decoration: none;
 }
 
-#message-container {
+/* #message-container {
   position: fixed;
   top: 10px;
   right: 10px;
+} */
+
+#message-container {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
 }
 
 .alert {
@@ -44014,4 +44020,14 @@ code.docs-card-gist .blob-wrapper {
 
 .pfn{
   font-size: 12px ;
+}
+
+.atag{
+  text-decoration: none;
+  color: blue;
+  text-align: left;
+}
+
+.captham{
+  background-color: white;
 }

@@ -34,12 +34,14 @@
                         <div
                             class="card card-blog  card-vertical card-hover-zoom card-blog-bordered rounded-4 overflow-hidden bg-white">
                             <a class="card-img rounded-0" href="{% url 'blog:single' pid=post.id %}" data-img-height
-                                style="--img-height: 72%;"><span
-                                    class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">تسهیلات</span><img
+                                style="--img-height: 72%;">
+                                {% for tag in post.tags.all %}<span
+                                    class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">{{tag.name}}</span>
+                                {% endfor %}<img
                                     loading="lazy" src="{{post.image.url}}" alt=""></a>
                             <div class="card-body py-40 px-50 pb-50"><a class="card-title h5"
                                     href="{% url 'blog:single' pid=post.id %}">{{post.title}}</a>
-                                <p class="card-text">{{post.content|truncatewords:20}}</p></br>
+                                <p class="card-text">{{post.content|truncatewords:20|safe}}</p></br>
                                 <p class="pfn">نویسنده : {{post.author.get_full_name}}</p><!-- Button-->
                                 <p class="pfn">تاریخ انتشار : {{post.published_at|date:'d / m / Y' }}</p><!-- Button--><a
                                     class="btn btn-accent-1 btn-link btn-clean"

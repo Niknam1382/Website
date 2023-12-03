@@ -12,8 +12,10 @@ def blog_view(request, **kwargs):
     # url = request.POST.get('url')
     # print(url)
     posts = Post.objects.filter(status=True).exclude(published_at__gte=now)
-    if kwargs.get('cat_name') is not None:
-        posts = Post.objects.filter(status=True, category__name=kwargs['cat_name']).exclude(published_at__gte=now)
+    if kwargs.get('cat_name'):
+        posts = posts.filter(category__name=kwargs['cat_name'])
+    if kwargs.get('tag_name'):
+        posts = posts.filter(tags__name__in=[kwargs['tag_name']])
         
     category = Category.objects.all()
     cat_dict = {}
