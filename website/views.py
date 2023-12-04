@@ -5,7 +5,19 @@ from django.contrib import messages
 
 # Create your views here.
 def index_view(request):
-    return render(request, 'home.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            msg = messages.success(request, "پیام شما با موفقیت ثبت شد")
+            return redirect('/')
+        else:
+            msg = messages.warning(request, "ثبت پیام شما با خطا مواجه شد")
+            return redirect('/')
+
+    form = ContactForm()
+    context = {'form': form}
+    return render(request, 'home.html', context)
 
 def aboutus_view(request):
     return render(request, 'about-us.html')
@@ -35,8 +47,6 @@ def contact_view(request):
         else:
             msg = messages.warning(request, "ثبت پیام شما با خطا مواجه شد")
             return redirect('/')
-        if msg :
-            context[str(msg)] = messages.success(request, "پیام شما با موفقیت ثبت شد")
 
     form = ContactForm()
     context = {'form': form}
