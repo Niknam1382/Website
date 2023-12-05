@@ -19,17 +19,8 @@ def index_view(request):
     context = {'form': form}
     return render(request, 'home.html', context)
 
-def aboutus_view(request):
-    return render(request, 'about-us.html')
-
-def services_view(request):
-    return render(request, 'services.html')
-
 def aboutme_view(request):
     return render(request, 'about-me.html')
-
-def team_view(request):
-    return render(request, 'team.html')
 
 def project_view(request):
     return render(request, 'projects.html')

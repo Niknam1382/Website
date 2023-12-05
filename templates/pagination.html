@@ -6,7 +6,7 @@
         {% endif %}
 
         <span class="current">
-            <pre class="pgn">  </pre>Page {{ posts.number }} of {{ posts.paginator.num_pages }}.<pre class="pgn">  </pre>
+            <pre class="pgn">  </pre>Page {{ posts.number }} of {{ posts.paginator.num_pages }}<pre class="pgn">  </pre>
             {% for i in posts.paginator.page_range %}
             <pre class="pgn">  </pre><a class="apgn" href="?page={{i}}">{{i}}</a><pre class="pgn">  </pre>
             {% endfor %}

@@ -5,318 +5,168 @@
 <!-- Main-->
 
 <div class="content-wrap ">
-    <div class="py-240 position-relative">
-        <div class="background">
-            <div class="background-image jarallax" data-jarallax data-speed="0.8"><img class="jarallax-img"
-                    loading="lazy" src="{{post.image.url}}" alt=""></div>
-        </div>
+  <div class="py-240 position-relative">
+    <div class="background">
+      <div class="background-image jarallax" data-jarallax data-speed="0.8"><img class="jarallax-img" loading="lazy"
+          src="{{post.image.url}}" alt=""></div>
     </div>
-    <div class="container">
-        <div class="row pt-120 pb-60">
-            <div class="col-12 col-lg-8 offset-lg-2">{% for tag in post.tags.all %}
-                <div class="subtitle mb-15 font-size-15 fw-medium text-gray-dark"><a class="atag" href="{% url 'blog:tag' tag_name=tag.name %}">{{tag.name}}</a><span
-                        class="sep-dot"></span>{{post.published_at}}<span
-                        class="sep-dot"></span>{{post.author.get_full_name}}<span
-                        class="sep-dot"></span>{{post.counted_view}} view's
+  </div>
+  <div class="container">
+    <div class="row pt-120 pb-60">
+      <div class="col-12 col-lg-8 offset-lg-2">{% for tag in post.tags.all %}
+        <div class="subtitle mb-15 font-size-15 fw-medium text-gray-dark"><a class="atag"
+            href="{% url 'blog:tag' tag_name=tag.name %}">{{tag.name}}</a><span
+            class="sep-dot"></span>{{post.published_at}}<span class="sep-dot"></span>{{post.author.get_full_name}}<span
+            class="sep-dot"></span>{{post.counted_view}} view's
 
-                    </div>{% endfor %}
-                <h3 class="m-0 ps-30">{{post.title}}</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg-8 offset-lg-2">
-                <p>{{post.content|safe}}</p>
-            </div>
-        </div>
-        
-        <div style="text-align: center;">
-            {% if post.id > prev.id %}
-            <a href="{{ prev.id }}" style="font-size: larger; color: brown;" >Prev-Post</a>
-            {% endif %}
-            <pre style="display: inline;">    </pre>
-            {% if next.id > post.id %}
-            <a href="{{ next.id }}" style="font-size: larger; color: brown;" >Next-Post</a>
-            {% endif %}
-        </div></br>
-<!--  -->
-<div class="col-12 col-lg-8 offset-lg-2">
-    <div id="disqus_thread"></div>
-    <script>
-        /**
-        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-        /*
-        var disqus_config = function () {
-        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        };
-        */
-        (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://127-0-0-1-8000-9x27uucjtb.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </div>{% endfor %}
+        <h3 class="m-0 ps-30">{{post.title}}</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-8 offset-lg-2">
+        <p>{{post.content|safe}}</p>
+      </div>
+    </div>
+<!-- <div style="text-align: center;">
+  <div class="btn pgm">
+    <div style="text-align: center;">
+      {% if post.id > prev.id %}
+      <a href="{{ prev.id }}" style="font-size: larger; color: brown;">Prev-Post</a>
+      {% endif %}
+      <pre style="display: inline;">    </pre>
+      {% if next.id > post.id %}
+      <a href="{{ next.id }}" style="font-size: larger; color: brown;">Next-Post</a>
+      {% endif %}
+    </div></br></hr>
+  </div>
+</div> -->
+<div style="text-align: center;">
+  <div class="btn pgm">
+    <div style="text-align: center;">
+      {% if post.id > prev.id %}
+      <a href="{{ prev.id }}" style="font-size: larger; color: brown;">Prev-Post</a>
+      {% endif %}
+      {% if post.id > prev.id and next.id > post.id %}
+      <pre style="display: inline;">    </pre>
+      {% endif %}
+      {% if next.id > post.id %}
+      <a href="{{ next.id }}" style="font-size: larger; color: brown;">Next-Post</a>
+      {% endif %}
+    </div></br></hr>
+  </div>
 </div>
-<!--  -->
+    <!--  -->
+    <div class="col-12 col-lg-8 offset-lg-2">
+    <hr style="color: black;">
+    </div>
+    <div class="col-12 col-lg-8 offset-lg-2">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+      <!--  -->
+      <link href="{% static 'css/commenting.css' %}" rel="stylesheet">
+      <!--  -->
 
+      <div class="container bootdey">
+        <div class="col-md-12 bootstrap snippets">
+          <div class="panel">
+            {% if request.user.is_authenticated %}
+            <div class="panel-body">
+            <form method="post" action="{% url 'blog:single' pid=post.id %}">
+            {% csrf_token %}
+              <textarea class="form-control" rows="4" name="message" placeholder="نظر شما چیست؟"></textarea>
+              {{form.captcha}}
+              <input type="hidden" name="post" value="{{post.id}}">
+              <input type="hidden" name="first_name" value="{{request.user.first_name}}">
+              <input type="hidden" name="last_name" value="{{request.user.last_name}}">
+              <input type="hidden" name="email" value="{{request.user.email}}">
+              <input type="hidden" name="username" value="{{request.user.username}}">
+              <div class="mar-top clearfix">
+                <button class="btn btn-sm btn-primary pull-right" type="submit"><i class="fa fa-pencil fa-fw"></i>
+                  Share</button>
+              </div>
+            </form>
+              
+            </div>
+            {% else %}
+            <p>برای ایجاد کامنت ابتدا <a style="color: red;" href="{% url 'accounts:login' %}">وارد</a> شوید</p>
+            <p>حساب کاربری ندارید؟ <a style="color: red;" href="{% url 'accounts:signup' %}">ساخت حساب کاربری</a></p>
+          </br>
+            {% endif %}
+          </div>
+          <div class="panel">
+            <div class="panel-body">
+              <!-- Newsfeed Content -->
+              <!--===================================================-->
+              {% for c in comment %}
+              <div class="media-block">
+                <div class="media-body">
+                  <div class="mar-btm">
+                    <p class="text-semibold media-heading box-inline">{{c.first_name}} گفته :</p>
+                  </div>
+                  <p>{{c.message}}</p>
+                  <p class="text-muted text-sm hnt">{{c.created_at|naturaltime}}</p>
+                  <hr>
+
+                  <!-- Comments -->
+                  <div>
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <P>هیج کامنتی اینجا نیست...</P>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <!--===================================================-->
+        <!-- End Newsfeed Content -->
+      </div>
+      
+      
+    </div>
+  </br>
 <!--  -->
-<div class="col-12 col-lg-8 offset-lg-2">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--  -->
-    <link href="{% static 'css/commenting.css' %}" rel="stylesheet">
-    <!--  -->
-<div class="container bootdey">
-<div class="col-md-12 bootstrap snippets">
-<div class="panel">
-  <div class="panel-body">
-    <textarea class="form-control" rows="2" placeholder="What are you thinking?"></textarea>
-    <div class="mar-top clearfix">
-      <button class="btn btn-sm btn-primary pull-right" type="submit"><i class="fa fa-pencil fa-fw"></i> Share</button>
-      <a class="btn btn-trans btn-icon fa fa-video-camera add-tooltip" href="#"></a>
-      <a class="btn btn-trans btn-icon fa fa-camera add-tooltip" href="#"></a>
-      <a class="btn btn-trans btn-icon fa fa-file add-tooltip" href="#"></a>
+<div class="row mb-130">
+  <div class="col-12 col-lg-8 offset-lg-2">
+    <hr class="mt-0 mb-25">
+    <div class="row justify-content-between gy-10">
+      <div class="col-auto"><span class="fw-medium font-size-16 ms-8">برچسب:</span>
+        {% for cat in post.category.all %}
+        <a class="text-decoration-none text-hover-accent-1" href="#">{{cat.name}} </a>{% if not forloop.last %} ,
+        {% endif %}{% endfor %}
+      </div>
+      <div class="col-auto"><span class="fw-medium font-size-16 ms-10">اشتراک:</span>
+        <ul class="nav nav-gap-md d-inline-flex">
+          <li class="nav-item"><a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="7"
+                height="13" fill="none">
+                <path fill="currentColor"
+                  d="M5.15 2.158H6.3V.091C6.102.063 5.42 0 4.625 0 2.966 0 1.83 1.077 1.83 3.054v1.821H0v2.31h1.83V13h2.244V7.186H5.83l.28-2.311H4.073V3.283c0-.668.174-1.125 1.076-1.125Z" />
+              </svg></a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="13" fill="none">
+                <path fill="currentColor"
+                  d="M14.324 3.849c.01.13.01.262.01.393 0 3.991-3.155 8.59-8.922 8.59a9.11 9.11 0 0 1-4.814-1.355c.252.028.495.038.757.038a6.434 6.434 0 0 0 3.892-1.29c-1.378-.028-2.533-.898-2.931-2.094.194.028.388.046.592.046.281 0 .563-.037.825-.103C2.296 7.794 1.22 6.58 1.22 5.111v-.037a3.25 3.25 0 0 0 1.417.383c-.844-.542-1.398-1.468-1.398-2.515 0-.56.156-1.075.427-1.524C3.21 3.251 5.53 4.448 8.13 4.578a3.288 3.288 0 0 1-.077-.692c0-1.664 1.398-3.02 3.135-3.02.903 0 1.718.365 2.291.954a6.32 6.32 0 0 0 1.99-.729 3.035 3.035 0 0 1-1.378 1.664 6.477 6.477 0 0 0 1.805-.467 6.61 6.61 0 0 1-1.572 1.56Z" />
+              </svg></a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="11"
+                height="14" fill="none">
+                <path fill="currentColor"
+                  d="M5.844 0C2.904 0 0 1.919 0 5.024 0 6.998 1.134 8.12 1.822 8.12c.283 0 .447-.774.447-.992 0-.261-.68-.817-.68-1.902 0-2.256 1.754-3.854 4.023-3.854 1.95 0 3.394 1.085 3.394 3.08 0 1.489-.61 4.283-2.586 4.283-.714 0-1.324-.505-1.324-1.229 0-1.06.756-2.087.756-3.18 0-1.858-2.69-1.521-2.69.723 0 .471.06.993.276 1.422-.396 1.666-1.204 4.149-1.204 5.865 0 .53.078 1.052.13 1.582.097.107.048.096.197.043 1.444-1.936 1.392-2.315 2.045-4.848.353.657 1.264 1.01 1.985 1.01C9.634 10.123 11 7.22 11 4.603 11 1.818 8.542 0 5.844 0Z" />
+              </svg></a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
-<div class="panel">
-    <div class="panel-body">
-    <!-- Newsfeed Content -->
-    <!--===================================================-->
-    <div class="media-block">
-      <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
-      <div class="media-body">
-        <div class="mar-btm">
-          <a href="#" class="btn-link text-semibold media-heading box-inline">Lisa D.</a>
-          <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile - 11 min ago</p>
-        </div>
-        <p>consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-        <div class="pad-ver">
-          <div class="btn-group">
-            <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-            <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-          </div>
-          <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
-        </div>
-        <hr>
-
-        <!-- Comments -->
-        <div>
-          <div class="media-block">
-            <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar2.png"></a>
-            <div class="media-body">
-              <div class="mar-btm">
-                <a href="#" class="btn-link text-semibold media-heading box-inline">Bobby Marz</a>
-                <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile - 7 min ago</p>
-              </div>
-              <p>Sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-              <div class="pad-ver">
-                <div class="btn-group">
-                  <a class="btn btn-sm btn-default btn-hover-success active" href="#"><i class="fa fa-thumbs-up"></i> You Like it</a>
-                  <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-                </div>
-                <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
-              </div>
-              <hr>
-            </div>
-          </div>
-
-          <div class="media-block">
-            <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar3.png">
-            </a>
-            <div class="media-body">
-              <div class="mar-btm">
-                <a href="#" class="btn-link text-semibold media-heading box-inline">Lucy Moon</a>
-                <p class="text-muted text-sm"><i class="fa fa-globe fa-lg"></i> - From Web - 2 min ago</p>
-              </div>
-              <p>Duis autem vel eum iriure dolor in hendrerit in vulputate ?</p>
-              <div class="pad-ver">
-                <div class="btn-group">
-                  <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-                  <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-                </div>
-                <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
-              </div>
-              <hr>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--===================================================-->
-    <!-- End Newsfeed Content -->
-
-
-    <!-- Newsfeed Content -->
-    <!--===================================================-->
-    <div class="media-block pad-all">
-      <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
-      <div class="media-body">
-        <div class="mar-btm">
-          <a href="#" class="btn-link text-semibold media-heading box-inline">John Doe</a>
-          <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile - 11 min ago</p>
-        </div>
-        <p>Lorem ipsum dolor sit amet.</p>
-        <img class="img-responsive thumbnail" src="https://www.bootdey.com/image/400x300" alt="Image">
-        <div class="pad-ver">
-          <span class="tag tag-sm"><i class="fa fa-heart text-danger"></i> 250 Likes</span>
-          <div class="btn-group">
-            <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-            <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-          </div>
-          <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
-        </div>
-        <hr>
-
-        <!-- Comments -->
-        <div>
-          <div class="media-block pad-all">
-            <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar2.png"></a>
-            <div class="media-body">
-              <div class="mar-btm">
-                <a href="#" class="btn-link text-semibold media-heading box-inline">Maria Leanz</a>
-                <p class="text-muted text-sm"><i class="fa fa-globe fa-lg"></i> - From Web - 2 min ago</p>
-              </div>
-              <p>Duis autem vel eum iriure dolor in hendrerit in vulputate ?</p>
-              <div>
-                <div class="btn-group">
-                  <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
-                  <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
-                </div>
-                <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--===================================================-->
-    <!-- End Newsfeed Content -->
-  </div>
-</div>
-</div>
-</div>
 </div>
 
-<!--  -->
-        <div class="row mb-130">
-            <div class="col-12 col-lg-8 offset-lg-2">
-                <hr class="mt-0 mb-25">
-                <div class="row justify-content-between gy-10">
-                    <div class="col-auto"><span class="fw-medium font-size-16 ms-8">برچسب:</span>
-                        {% for cat in post.category.all %}
-                        <a class="text-decoration-none text-hover-accent-1" href="#">{{cat.name}} </a>{% if not forloop.last %} ,
-                        {% endif %}{% endfor %} </div>
-                    <div class="col-auto"><span class="fw-medium font-size-16 ms-10">اشتراک:</span>
-                        <ul class="nav nav-gap-md d-inline-flex">
-                            <li class="nav-item"><a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg"
-                                        width="7" height="13" fill="none">
-                                        <path fill="currentColor"
-                                            d="M5.15 2.158H6.3V.091C6.102.063 5.42 0 4.625 0 2.966 0 1.83 1.077 1.83 3.054v1.821H0v2.31h1.83V13h2.244V7.186H5.83l.28-2.311H4.073V3.283c0-.668.174-1.125 1.076-1.125Z" />
-                                    </svg></a></li>
-                            <li class="nav-item"><a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="13" fill="none">
-                                        <path fill="currentColor"
-                                            d="M14.324 3.849c.01.13.01.262.01.393 0 3.991-3.155 8.59-8.922 8.59a9.11 9.11 0 0 1-4.814-1.355c.252.028.495.038.757.038a6.434 6.434 0 0 0 3.892-1.29c-1.378-.028-2.533-.898-2.931-2.094.194.028.388.046.592.046.281 0 .563-.037.825-.103C2.296 7.794 1.22 6.58 1.22 5.111v-.037a3.25 3.25 0 0 0 1.417.383c-.844-.542-1.398-1.468-1.398-2.515 0-.56.156-1.075.427-1.524C3.21 3.251 5.53 4.448 8.13 4.578a3.288 3.288 0 0 1-.077-.692c0-1.664 1.398-3.02 3.135-3.02.903 0 1.718.365 2.291.954a6.32 6.32 0 0 0 1.99-.729 3.035 3.035 0 0 1-1.378 1.664 6.477 6.477 0 0 0 1.805-.467 6.61 6.61 0 0 1-1.572 1.56Z" />
-                                    </svg></a></li>
-                            <li class="nav-item"><a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg"
-                                        width="11" height="14" fill="none">
-                                        <path fill="currentColor"
-                                            d="M5.844 0C2.904 0 0 1.919 0 5.024 0 6.998 1.134 8.12 1.822 8.12c.283 0 .447-.774.447-.992 0-.261-.68-.817-.68-1.902 0-2.256 1.754-3.854 4.023-3.854 1.95 0 3.394 1.085 3.394 3.08 0 1.489-.61 4.283-2.586 4.283-.714 0-1.324-.505-1.324-1.229 0-1.06.756-2.087.756-3.18 0-1.858-2.69-1.521-2.69.723 0 .471.06.993.276 1.422-.396 1.666-1.204 4.149-1.204 5.865 0 .53.078 1.052.13 1.582.097.107.048.096.197.043 1.444-1.936 1.392-2.315 2.045-4.848.353.657 1.264 1.01 1.985 1.01C9.634 10.123 11 7.22 11 4.603 11 1.818 8.542 0 5.844 0Z" />
-                                    </svg></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="bg-linear-gradient py-120">
-        <div class="container">
-            <h3 class="text-center">وبلاگ های مرتبط</h3>
-            <div class="swiper mt-90" data-swiper-slides="1" data-swiper-breakpoints="828:2, 1024:3"
-                data-swiper-gap="30" data-swiper-grabcursor="true">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div data-filters="company">
-                                <!-- Blog-->
-                                <div class="card card-blog  card-vertical card-hover-zoom"><a class="card-img rounded-4"
-                                        href="single-post.html" data-img-height style="--img-height: 90%;"><span
-                                            class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">مسکن</span><img
-                                            loading="lazy" src="assets/img/blog/related-post-1-900x800.jpg" alt=""></a>
-                                    <div class="card-body pt-30">
-                                        <div class="card-date text-gray-dark">25 خرداد، 1400</div><a
-                                            class="card-title h5" href="single-post.html">افزایش ناگهانی قیمت اجاره مسکن
-                                            و تاثیر آن بر مستاجران</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div data-filters="business">
-                                <!-- Blog-->
-                                <div class="card card-blog  card-vertical card-hover-zoom"><a class="card-img rounded-4"
-                                        href="single-post.html" data-img-height style="--img-height: 90%;"><span
-                                            class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">گردشگری</span><img
-                                            loading="lazy" src="assets/img/blog/related-post-2-900x800.jpg" alt=""></a>
-                                    <div class="card-body pt-30">
-                                        <div class="card-date text-gray-dark">18 مرداد، 1400</div><a
-                                            class="card-title h5" href="single-post.html">پیاده روی در طبیعت می تواند
-                                            حافظه ی کوتاه مدت را ارتقا دهد!</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div data-filters="marketing">
-                                <!-- Blog-->
-                                <div class="card card-blog  card-vertical card-hover-zoom"><a class="card-img rounded-4"
-                                        href="single-post.html" data-img-height style="--img-height: 90%;"><span
-                                            class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">برنامه
-                                            نویسی</span><img loading="lazy"
-                                            src="assets/img/blog/related-post-3-900x800.jpg" alt=""></a>
-                                    <div class="card-body pt-30">
-                                        <div class="card-date text-gray-dark">7 بهمن، 1400</div><a class="card-title h5"
-                                            href="single-post.html">۹ کتاب آموزش برنامه نویسی پایتون برای مبتدی‌ها و
-                                            حرفه‌‌ای‌ها</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div data-filters="company">
-                                <!-- Blog-->
-                                <div class="card card-blog  card-vertical card-hover-zoom"><a class="card-img rounded-4"
-                                        href="single-post.html" data-img-height style="--img-height: 90%;"><span
-                                            class="badge bg-dark text-white position-absolute top-0 end-0 z-index-1 mt-20 me-20">دنیای
-                                            وب</span><img loading="lazy"
-                                            src="assets/img/blog/related-post-4-900x800.jpg" alt=""></a>
-                                    <div class="card-body pt-30">
-                                        <div class="card-date text-gray-dark">25 اردیبهشت، 1399</div><a
-                                            class="card-title h5" href="single-post.html">معرفی و دانلود بهترین کتاب‌های
-                                            آموزش طراحی وب (PDF رایگان)</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-button-prev swiper-button-position-1 swiper-button-white shadow mt-n90"><svg
-                        xmlns="http://www.w3.org/2000/svg" width="20" height="14" fill="none">
-                        <path fill="currentColor" fill-rule="evenodd"
-                            d="m3.96 6.15 5.08-4.515L7.91.365.445 7l7.465 6.635 1.13-1.27L3.96 7.85h15.765v-1.7H3.96Z"
-                            clip-rule="evenodd" />
-                    </svg></div>
-                <div class="swiper-button-next swiper-button-position-1 swiper-button-white shadow mt-n90"><svg
-                        xmlns="http://www.w3.org/2000/svg" width="20" height="14" fill="none">
-                        <path fill="currentColor" fill-rule="evenodd"
-                            d="m16.21 6.15-5.08-4.515 1.13-1.27L19.725 7l-7.465 6.635-1.13-1.27 5.08-4.515H.445v-1.7H16.21Z"
-                            clip-rule="evenodd" />
-                    </svg></div>
-            </div>
-        </div>
-    </div>
 </div>
+{% if messages %}
+        <div id="message-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 {% endblock %}

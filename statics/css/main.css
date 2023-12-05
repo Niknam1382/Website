@@ -44035,19 +44035,8 @@ html,body {
 }
 
 body.my-login-page {
-	background-color: #bee5eb;
+	background-color: white;
 	font-size: 14px;
-}
-
-.my-login-page .brand {
-	width: 90px;
-	height: 90px;
-	overflow: hidden;
-	border-radius: 50%;
-	margin: 40px auto;
-	box-shadow: 0 4px 8px rgba(0,0,0,.05);
-	position: relative;
-	z-index: 1;
 }
 
 .my-login-page .card-wrapper {
@@ -44056,7 +44045,7 @@ body.my-login-page {
 
 .my-login-page .card {
 	border-color: transparent;
-	box-shadow: 0 4px 8px rgba(0,0,0,.5);
+	box-shadow: 0 4px 8px rgba(0,0,0,1);
 }
 
 .my-login-page .card.fat {
@@ -44100,4 +44089,9 @@ body.my-login-page {
 	.my-login-page .card.fat .card-body {
 		padding: 15px;
 	}
+}
+
+.hnt{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  direction: ltr;
 }
