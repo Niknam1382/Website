@@ -15,7 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+'''
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0ag5##3m^70x8wg_97$xcc-407gq(fw6$b9ng=^qfhypiyp7r6
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+'''
 
 # Application definition
 
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'jalali_date',
     'website',
     'blog',
     'django.contrib.humanize',
@@ -49,6 +48,10 @@ INSTALLED_APPS = [
     'django_summernote',
     'captcha',
     'accounts',
+    "compressor",
+    "cssmin",
+    "jsmin",
+    'utils',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +84,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
+'''
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -91,7 +94,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -117,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Tehran'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -134,50 +137,24 @@ MEDIA_URL = 'media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+'''
 STATICFILES_DIRS = [
     BASE_DIR / "statics",
 ]
 STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_ROOT = BASE_DIR / 'media'
+'''
 
+'''
 SITE_ID = 3
-
-# default settings (optional)
-# JALALI_DATE_DEFAULTS = {
-#    'Strftime': {
-#         'date': '%y/%m/%d',
-#         'datetime': '%H:%M:%S _ %y/%m/%d',
-#     },
-#     'Static': {
-#         'js': [
-#             # loading datepicker
-#             'admin/js/django_jalali.min.js',
-#             # OR
-#             # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.core.js',
-#             # 'admin/jquery.ui.datepicker.jalali/scripts/calendar.js',
-#             # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc.js',
-#             # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc-fa.js',
-#             # 'admin/js/main.js',
-#         ],
-#         'css': {
-#             'all': [
-#                 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
-#             ]
-#         }
-#     },
-# }
-
-# LANGUAGE_CODE = 'fa'
-
-# import locale
-# locale.setlocale(locale.LC_ALL, "fa_IR.UTF-8")
+'''
 
 # robots
 ROBOTS_USE_HOST = True
 ROBOTS_USE_SITEMAP = True
-
+'''
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+'''
 SUMERNOTE_THEME = 'bs4'
 
 MULTI_CAPTCHA_ADMIN = {
@@ -189,8 +166,24 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'nik.django.2004@gmail.com'
-# EMAIL_HOST_PASSWORD = 'django12345678'
 EMAIL_HOST_PASSWORD = 'axum oqje tqmj mzkx'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CSRF_COOKIE_SECURE = True
+
+STATICFILES_FINDERS = ( ##django compressor
+'django.contrib.staticfiles.finders.FileSystemFinder',
+'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# other finders..
+'compressor.finders.CompressorFinder', )
+
+# COMPRESS_ENABLED = True
+# COMPRESS_ROOT = STATIC_ROOT ##django compressor
+# COMPRESS_OFFLINE = True
+
+# if not COMPRESS_ENABLED: ##django compressor
+#     COMPRESS_ENABLED = True
+#     COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
+#     COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"] ##django compressor
+
+HANDLER404 = 'website.views.custom'

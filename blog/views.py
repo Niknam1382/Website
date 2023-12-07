@@ -8,8 +8,6 @@ from blog.forms import CommentForm
 # Create your views here.
 def blog_view(request, **kwargs):
     now = timezone.now()
-    # url = request.POST.get('url')
-    # print(url)
     posts = Post.objects.filter(status=True).exclude(published_at__gte=now)
     if kwargs.get('cat_name'):
         posts = posts.filter(category__name=kwargs['cat_name'])

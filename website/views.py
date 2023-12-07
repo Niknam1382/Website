@@ -42,3 +42,14 @@ def contact_view(request):
     form = ContactForm()
     context = {'form': form}
     return render(request, 'contact.html',context)
+
+from django.shortcuts import render
+def timer_view(request):
+    return render (request,'coming-soon.html')
+
+def custom_page_not_found_view(request, exception):
+    return render(request, "404.html", {})
+
+
+def custom(request):
+    return render(request, '404.html')
