@@ -23,6 +23,8 @@ from website.sitemaps import StaticViewSitemap
 from blog.sitemaps import BlogSitemap
 from website.views import timer_view
 
+from django.views.static import serve
+
 sitemaps = {
     "static": StaticViewSitemap,
     'blog': BlogSitemap,
@@ -39,6 +41,7 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     path('captcha/', include('captcha.urls')),
     path('accounts/', include('accounts.urls')),
+    re_path(r'^media/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
